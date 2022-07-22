@@ -18,14 +18,11 @@ router.post('/upload', upload.single('fileName'),async (req,res)=>{
     }
   });
 
-router.post("/read", async (req, res) => {
+router.post("/download", async (req, res) => {
     try {
       const {name, dir} = req.body;
-      const file = dir + '/' + name;
-      console.log('file - ' , file);
-      const data = await fileLogic.readFile(file);
-      console.log(data);
-      res.send(data);
+      const path = dir + '/' + name;
+      res.download(path);
     } catch (error) {
       res.send(error.message);
     }

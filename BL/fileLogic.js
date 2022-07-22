@@ -14,13 +14,18 @@ const createFile = (fileName, value) => {
 };
 
 const readFile = async (path) => {
-  console.log("path - ", path);
-  if (!isExist(path)) throw { message: "File dosen't exist" };
-  const data = await fs.readFileSync(path, {
-    encoding: "utf-8",
-  });
-  return data;
+  // console.log("path - ", path);
+  // if (!isExist(path)) throw { message: "File dosen't exist" };
+  // const data = await fs.readFileSync(path, {
+  //   encoding: "utf-8",
+  // });
+  // return data;
+  return fs.createReadStream(path);
+
 };
+
+
+
 const updateFile = (fileName, value) => {
   if (!isExist(fileName)) throw { message: "file dosen't exist" };
   fs.appendFileSync(`uploads/${fileName}`, value);
