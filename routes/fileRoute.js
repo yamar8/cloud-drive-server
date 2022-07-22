@@ -69,9 +69,10 @@ router.post("/read", async (req, res) => {
     }
   });
 
-  router.post('/newfolder',async(req,res) => {
+  router.post('/newfolder', async(req,res) => {
     try{
-      await fileLogic.createFolder(req.body);
+      const folder =  await fileLogic.createFolder(req.body);
+      res.send(folder);
     }catch(error){
       res.send(error);
     }
@@ -79,7 +80,8 @@ router.post("/read", async (req, res) => {
 
   router.delete('/deletefolder',async(req,res) => {
     try{
-      fileLogic.deleteFolder(req.body);
+      const deleted = fileLogic.deleteFolder(req.body);
+      res.send(deleted);
     }catch(error){
       res.send(error.message);
     }

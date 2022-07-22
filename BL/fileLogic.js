@@ -40,15 +40,16 @@ const createFolder = async (folder) =>{
   if (!name || !dir) throw { code: 405, message: "missing data" };
   
   const fold = await fileController.readOne({name,dir,type: 'folder'});
-  console.log('fold-', fold);
   if(fold) throw new Error("folder already exist");
 
-  await fileController.create({name,dir,type: 'folder'});
   console.log('dir-',dir,'name-',name);
   if (!isExist(`./${dir}/${name}`)){
     fs.mkdirSync(`./${dir}/${name}`);
     console.log('folder has been created');
-}
+  }
+  const newfolder =  await fileController.create({name,dir,type: 'folder'});
+  newfolder = newfolder.toJson();
+  return newfolder;
 }
 
  function isExist(path) {
@@ -82,11 +83,17 @@ const getFileByPath = async (path) => {
 };
 
 const deleteFolder = async(folder) => {
-  //TODO check if a diractory isn't empty
-  fileController.del(folder);
-  const {dir,name} = folder;
-  if(!isExist(`./${dir}/${name}`)) throw { message: "folder dosen't exist" };
-  fs.rmdirSync((`./${dir}/${name}`));
+  try{
+    const {dir,name} = folder;
+    console.log(":::",dir,name);
+    if(!dir || !name) throw new Error("missing data");
+    //TODO check if a diractory isn't empty
+    if(!fs.existsSync(`./${dir}/${name}`)) throw { message: "folder dosen't exist" };
+    fs.rmdirSync((`./${dir}/${name}`));
+    return fileController.del({name: name, dir: dir});
+  }catch(error){
+    console.log(error.message);
+  }
 }
 
 module.exports = {

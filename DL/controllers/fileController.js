@@ -12,10 +12,10 @@ async function create(data){
     return await fileModel.findOne({...filter,isActive: true},proj);
  }
  async function update(filter,newData){
-    return await fileModel.updateOne(filter, newData);
+    return await fileModel.updateOne({...filter,isActive: true}, newData);
  }
  async function del(filter){
-   return await update(filter,{"$set":{"isActive":false}});
+  return fileModel.findOneAndUpdate({...filter,isActive: true}, {"$set":{"isActive":false}});
 }
  module.exports = {create,read,update,del,readOne};
 
