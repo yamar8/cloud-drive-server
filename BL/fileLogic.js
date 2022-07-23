@@ -37,7 +37,7 @@ const deleteFile = (file) => {
   const {name, dir} = file;
 
   if (!isExist) throw { message: "File dosen't exist" };
-  fs.unlinkSync(`uploads/${name}`);
+  fs.unlinkSync(`${dir}/${name}`);
 };
 
 const createFolder = async (folder) =>{
